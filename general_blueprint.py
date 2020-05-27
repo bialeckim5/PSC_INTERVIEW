@@ -1,4 +1,7 @@
 from random import randint
+
+import sqlalchemy
+
 from models import User, Book
 from flask import Blueprint, request, flash, redirect, url_for, session, render_template, Response
 from flask_mail import *
@@ -17,7 +20,7 @@ def share():
     user = User.query.filter_by(id=session['id']).filter_by(otp=session['otp']).first()
 
     #sends rendered library message
-    msg = Message('Share',sender = 'bialecki@psc.edu', recipients = ['bialecki@psc.edu'])
+    msg = Message('Share',sender = 'bialecki@psc.edu', recipients = [user.username])
     msg.body = render_template('library.html', books = Book.query.filter_by(user_id=user.id))
     mail = Mail(current_app)
     mail.send(msg)
@@ -34,10 +37,14 @@ def setup_otp(new_user):
     new_user.registered = False
 
     #OTP is sent via email
-    msg = Message('OTP',sender = 'bialecki@psc.edu', recipients = ['bialecki@psc.edu'])
+    msg = Message('OTP',sender = 'bialecki@psc.edu', recipients = [new_user.username])
     msg.body = str(otp)
     mail = Mail(current_app)
-    mail.send(msg)
+    #any failing email is still recorded in the database
+    try:
+        mail.send(msg)
+    except:
+        pass
 
 
 
@@ -54,8 +61,12 @@ def register():
             setup_otp(new_user)
             #add new user to database
             db.session.add(new_user)
-            db.session.commit()
-            flash("This user was registered")
+            try:
+                db.session.commit()
+            except:
+                flash("The user was already registered")
+                return redirect(url_for('auth_blueprint.logon'))
+            flash("The user was registered")
             return redirect(url_for('auth_blueprint.logon'))
     return render_template('register.html')
 
