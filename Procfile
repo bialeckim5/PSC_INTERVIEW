@@ -1,1 +1,1 @@
-web: flask run --host https://pscflask.herokuapp.com/
+web: gunicorn app:app
