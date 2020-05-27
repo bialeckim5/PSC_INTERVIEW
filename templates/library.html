@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+   <head></head>
+   <body>
+      <h3>Book List
+      </h3>
+      <h3>Logout (<a href = "{{ url_for('auth_blueprint.logout') }}">Logout
+         </a>)</h3>
+      <hr/>
+      {%- for message in get_flashed_messages() %}
+         {{ message }}
+      {%- endfor %}
+
+      <h3>Books (<a href = "{{ url_for('general_blueprint.new_book') }}">Add Book
+         </a>)</h3>
+
+      <table>
+         <thead>
+            <tr>
+               <th>Title</th>
+               <th>Author</th>
+               <th>Date Purchased</th>
+               <th>Notes</th>
+                <th>Edit</th>
+                <th>Remove</th>
+            </tr>
+         </thead>
+
+         <tbody>
+            {% for book in books %}
+               <tr>
+                  <td>{{ book.title }}</td>
+                  <td>{{ book.author }}</td>
+                  <td>{{ book.purchased }}</td>
+                  <td>{{ book.notes }}</td>
+                   <td>(<a href = "{{ url_for("general_blueprint.update_book", id= book.id) }}">Edit Notes)</a></td>
+                   <td>(<a href = "{{ url_for("general_blueprint.remove_book", id= book.id) }}">Remove Book)</a></td>
+               </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+      (<a href = "{{ url_for("general_blueprint.share") }}">Share Books)</a>
+   </body>
+</html>

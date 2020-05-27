@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+   <body>
+      <h3>Add Book to Library</h3>
+      <hr/>
+
+      {%- for category, message in get_flashed_messages(with_categories = true) %}
+         <div class = "alert alert-danger">
+            {{ message }}
+         </div>
+      {%- endfor %}
+
+      <form action = "{{ request.path }}" method = "post">
+         <label for = "title">Title</label><br>
+         <input type = "text" name = "title" placeholder = "Title" /><br>
+         <label for = "author">Author</label><br>
+         <input type = "text" name = "author" placeholder = "Author" /><br>
+         <label for = "purchased">Purchased</label><br>
+         <input type="date" name = "purchased" /><br>
+          <label for = "notes">Notes</label><br>
+          <textarea name = "notes" placeholder = "Notes" rows="6" cols="50"></textarea><br>
+         <input type = "submit" value = "Submit" />
+      </form>
+   </body>
+</html>

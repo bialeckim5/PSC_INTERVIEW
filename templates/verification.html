@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+   <body>
+      <h3>Verification</h3>
+      <hr/>
+
+      {%- for category, message in get_flashed_messages(with_categories = true) %}
+         <div class = "alert alert-danger">
+            {{ message }}
+         </div>
+      {%- endfor %}
+
+      <form action = "{{ request.path }}" method = "post">
+         <label for = "ID">ID</label><br>
+         <input type = "text" name = "ID" placeholder = "{{ id }}" /><br>
+         <label for = "password">OTP</label><br>
+         <input type = "text" name = "otp" placeholder = "OTP" /><br>
+         <input type = "submit" value = "Submit" />
+      </form>
+   <br>
+   </body>
+</html>
