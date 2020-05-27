@@ -12,7 +12,8 @@ from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
-
+from dotenv import load_dotenv
+load_dotenv()
 
 #initialization of flask app
 app = Flask(__name__)
@@ -22,8 +23,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///books.sqlite3'
 app.config['SECRET_KEY'] =  os.urandom(12)
 app.config["MAIL_SERVER"] = 'smtp.gmail.com'
 app.config["MAIL_PORT"] = 465
-app.config["MAIL_USERNAME"] = 'bialecki@psc.edu'
-app.config['MAIL_PASSWORD'] = 'pscrocks2020'
+app.config["MAIL_USERNAME"] = os.getenv("EMAIL")
+app.config['MAIL_PASSWORD'] = os.getenv("MAILPASS")
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
